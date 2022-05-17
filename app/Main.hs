@@ -68,7 +68,7 @@ data ErrorMessage = ErrorMessage
 
 instance FromJSON ErrorMessage where
    parseJSON (Object v) =
-   ErrorMessage <$> v .: "message"
+    ErrorMessage <$> v .: "message"
                 <*> v .: "error"
 
 exampleMessage :: Maybe T.Text
@@ -76,6 +76,15 @@ exampleMessage = Just "Opps"
 
 exampleError :: Maybe Int
 exampleError = Just 123
+
+sampleErrorMessage :: Maybe ErrorMessage
+sampleErrorMessage = decode sampleError
+
+instance ToJSON ErrorMessage where
+  toJSON (ErrorMessage message errorCode) =
+   object [ "message" .= message
+         , "error" .= errorCode
+         ]
 
 main :: IO ()
 main = print "hi"

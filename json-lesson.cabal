@@ -40,6 +40,9 @@ executable json-lesson-exe
       Paths_json_lesson
   hs-source-dirs:
       app
+  default-extensions:
+      OverloadedStrings
+      DeriveGeneric
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson

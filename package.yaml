@@ -38,6 +38,9 @@ executables:
     - aeson
     - bytestring
     - text
+    default-extensions:
+    - OverloadedStrings
+    - DeriveGeneric
 
 tests:
   json-lesson-test:

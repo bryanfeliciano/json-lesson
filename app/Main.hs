@@ -17,7 +17,7 @@ data Book = Book
                 tittle :: T.Text,
                 author :: T.Text,
                 year :: Int
-            } deriving (Show)
+            } deriving (Show,Generic)
 
 instance FromJSON Book
 instance ToJSON Book

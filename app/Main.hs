@@ -32,7 +32,14 @@ myBook = Book
          }
 
 myBookJSON :: BC.ByteString
-myBookJSON = encode myBook         
+myBookJSON = encode myBook
+
+rawJSON :: BC.ByteString
+rawJSON = "{\"author\":\"Emil Ciroan\",\"title\":
+            \"A Short History of Decay\",\"year=1949}"
+
+bookFromJSON :: Maybe Book
+bookFromJSON = decode rawJSON
 
 main :: IO ()
 main = print "hi"

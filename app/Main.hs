@@ -22,6 +22,19 @@ data Book = Book
 instance FromJSON Book
 instance ToJSON Book
 
+data NOAAResult = NOAAResult
+                  { uid :: T.Text
+                  , mindate :: T.Text
+                  , maxdate :: T.Text
+                  , name :: T.Text
+                  , datacoverage :: Int
+                  , resultId :: T.Text
+                  } deriving Show
+
+data ErrorMessage = ErrorMessage
+                  { message :: T.Text
+                  , errorCode :: Int
+                  } deriving Show
 
 myBook :: Book 
 myBook = Book
@@ -49,17 +62,6 @@ bookFromWrongJSON = decode wrongJSON
 sampleError :: BC.ByteString
 sampleError = "{\"message\":\"oops!\",\"error\": 123}"
 
--- This works but you might want to write something that lines up better with json data
--- data ErrorMessage = ErrorMessage
---                     { message :: T.Text
---                     , error :: Int
---                     } deriving Show
-
-data ErrorMessage = ErrorMessage
-                    { message :: T.Text
-                    , errorCode :: Int
-                    } deriving Show
-
 -- Unfortunately, if you try to automatically derive ToJSON and FromJSON, your programs will
 -- expect an errorCode field instead of error. If you were in control of this JSON, you could
 -- rename the field, but you’re not. You need another solution to this problem.
@@ -85,6 +87,9 @@ instance ToJSON ErrorMessage where
    object [ "message" .= message
          , "error" .= errorCode
          ]
+
+anErrorMessage :: ErrorMessage
+anErrorMessage = ErrorMessage "Everything is Okay" 0
 
 main :: IO ()
 main = print "hi"

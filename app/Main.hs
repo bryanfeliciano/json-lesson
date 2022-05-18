@@ -129,9 +129,13 @@ anErrorMessage = ErrorMessage "Everything is Okay" 0
 printResults :: Maybe [NOAAResult] -> IO ()
 printResults Nothing = print "error loading data"
 printResults (Just results) = do
-   forM_ results (print . name)
-    print dataName 
+    forM_ results (print . name)
+      print dataName 
 
 
 main :: IO ()
-main = print "hi"
+main = do
+    jsonData <- B.readFile "data.json"
+    let noaaResponse = decode jsonData :: Maybe NOAAResponse
+    let noaaResults = results <$> noaaResponse
+    printResults noaaResults

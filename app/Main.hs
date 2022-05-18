@@ -31,10 +31,44 @@ data NOAAResult = NOAAResult
                   , resultId :: T.Text
                   } deriving Show
 
+instance FromJSON NOAAResult where
+    parseJSON (Object v) =
+       NOAAResult <$> v .: "uid"
+                  <*> v .: "mindate"
+                  <*> v .: "maxdate"
+                  <*> v .: "name"
+                  <*> v .: "datacoverage"
+                  <*> v .: "id"
+
+data Resultset = Resultset
+                  { offset :: Int
+                  , count :: Int
+                  , limit :: Int
+                   } deriving (Show,Generic)
+                  
+instance FromJSON Resultset
+
+
 data ErrorMessage = ErrorMessage
                   { message :: T.Text
                   , errorCode :: Int
                   } deriving Show
+
+
+data Metadata = Metadata
+                  {
+                  resultset :: Resultset
+                  } deriving (Show,Generic)
+
+instance FromJSON Metadata
+
+data NOAAResponse = NOAAResponse
+                    { metadata :: Metadata
+                    , results :: [NOAAResult]
+                    } deriving (Show,Generic)
+
+instance FromJSON NOAAResponse
+
 
 myBook :: Book 
 myBook = Book
@@ -85,8 +119,8 @@ sampleErrorMessage = decode sampleError
 instance ToJSON ErrorMessage where
   toJSON (ErrorMessage message errorCode) =
    object [ "message" .= message
-         , "error" .= errorCode
-         ]
+          , "error" .= errorCode
+          ]
 
 anErrorMessage :: ErrorMessage
 anErrorMessage = ErrorMessage "Everything is Okay" 0
